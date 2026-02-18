@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bu Men – Hujjatlar</title>
+<style>
+:root {
+    --primary: #2563eb;
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --text: #ffffff;
+    --muted: #8b949e;
+    --border: #c5c5c5;
+    --shadow: rgba(225, 225, 225, 0.5);
+    --success: #2ea44f;
+    --danger: #d73a49;
+    --pending: #dbab09;
+}
+
+* { box-sizing: border-box; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
+
+body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
+
+nav.top-nav {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.logo { font-weight: 700; font-size: 20px; color: var(--primary); }
+.nav-links { display: flex; gap: 25px; }
+.nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary); font-weight: 600; }
+
+main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+.doc-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px var(--shadow);
+    margin-bottom: 20px;
+}
+
+.doc-card h4 { margin-bottom: 8px; }
+.doc-card p { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+
+.doc-status {
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-signed { background: var(--success); color: #fff; }
+.status-rejected { background: var(--danger); color: #fff; }
+.status-pending { background: var(--pending); color: #fff; }
+
+.doc-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: transform 0.2s;
+}
+
+.btn:hover { transform: scale(1.05); }
+.btn-view { background: var(--primary); color: #fff; }
+.btn-accept { background: var(--success); color: #fff; }
+.btn-deny { background: var(--danger); color: #fff; }
+
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 6px var(--shadow);
+    z-index: 1000;
+}
+
+.bottom-nav a {
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.bottom-nav a.active { color: var(--primary); font-weight: 600; }
+
+@media (max-width: 768px) { nav.top-nav { display: none; } .bottom-nav { display: flex; } }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="logo">Bu Men</div>
+    <div class="nav-links">
+        <a href="/index.html">Yordam</a>
+    </div>
+</nav>
+
+<main>
+    <!-- Example of pending document -->
+    <div class="doc-card">
+        <h4>Hujjat: Shartnoma #123</h4>
+        <p>Vaqt: 2026-01-30 12:15</p>
+        <span class="doc-status status-pending">Kutilmoqda</span>
+        <div class="doc-actions">
+            <button class="btn btn-view">Ko‘rish</button>
+            <button class="btn btn-accept">Qabul qilish</button>
+            <button class="btn btn-deny">Rad etish</button>
+        </div>
+    </div>
+
+    <!-- Example of signed document -->
+    <div class="doc-card">
+        <h4>Hujjat: Shartnoma #122</h4>
+        <p>Vaqt: 2026-01-29 16:45</p>
+        <span class="doc-status status-signed">Imzolangan</span>
+        <div class="doc-actions">
+            <button class="btn btn-view">Ko‘rish</button>
+        </div>
+    </div>
+
+    <!-- Example of rejected document -->
+    <div class="doc-card">
+        <h4>Hujjat: Shartnoma #121</h4>
+        <p>Vaqt: 2026-01-28 09:30</p>
+        <span class="doc-status status-rejected">Rad etilgan</span>
+        <div class="doc-actions">
+            <button class="btn btn-view">Ko‘rish</button>
+        </div>
+    </div>
+</main>
+
+{% include 'navbar.html' %}
+
+</body>
+</html>

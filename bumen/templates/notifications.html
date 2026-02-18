@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bu Men – Habarlar</title>
+<style>
+    :root {
+        --primary: #2563eb;
+        --bg: #ffffff;
+        --card-bg: #ffffff;
+        --text: #ffffff;
+        --muted: #8b949e;
+        --border: #c5c5c5;
+        --shadow: rgba(225, 225, 225, 0.5);
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
+
+    body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
+
+    nav.top-nav {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 6px var(--shadow);
+    }
+    a{text-decoration: none;}
+
+    .logo { font-weight: 700; font-size: 20px; color: var(--primary); }
+    .nav-links { display: flex; gap: 25px; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a.active { color: var(--primary); font-weight: 600; }
+
+    main { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+
+    .notification-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 12px var(--shadow);
+        margin-bottom: 20px;
+    }
+
+    .notification-card h4 { color: var(--primary); margin-bottom: 6px; }
+    .notification-card p { color: var(--muted); margin-bottom: 6px; font-size: 14px; }
+    .notification-card .time { font-size: 12px; color: #6b737d; margin-bottom: 12px; }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        transition: transform 0.2s;
+    }
+    .btn:hover { transform: scale(1.05); }
+    .btn-accept { background-color: var(--primary); color: var(--text); }
+    .btn-deny { background-color: #d64545; color: var(--text); }
+    .btn-view { background-color: #64748b; color: var(--text); }
+
+    .bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65px;
+        background: var(--card-bg);
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -2px 6px var(--shadow);
+        z-index: 1000;
+    }
+
+    .bottom-nav a { color: var(--muted); font-size: 12px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bottom-nav a.active { color: var(--primary); font-weight: 600; }
+
+    @media (max-width: 768px) { nav.top-nav { display: none; } .bottom-nav { display: flex; } }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="logo">Bu Men</div>
+    <div class="nav-links">
+        <a href="#">Yordam</a>
+    </div>
+</nav>
+
+<main>
+    {% for i in requests %}
+    {% if i.status == 'pending' %}
+        <!-- Pending request -->
+        <div class="notification-card">
+            <h4>Yangi so‘rov: “Imzolash uchun kontrakt”</h4>
+            <p>So‘rovchi: {{i.company.name}}</p>
+            <div class="time">{{i.created_at}}</div>
+            <div class="actions">
+                <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+                <button class="btn btn-accept" onclick="sign('{{i.request_id}}')">Qabul qilish</button>
+                <button class="btn btn-deny" onclick="reject('{{i.request_id}}')">Rad etish</button>
+            </div>
+        </div>
+    {% elif i.status == 'signed' %}
+        <!-- Signed document -->
+        <div class="notification-card">
+            <h4 style="color: #2b961c;">Imzolangan hujjat</h4>
+            <p>So‘rovchi: {{i.company.name}}</p>
+            <div class="time">{{i.created_at}}</div>
+            <div class="actions">
+                <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+            </div>
+        </div>
+    {% elif i.status == 'rejected' %}
+        <!-- Denied document -->
+        <div class="notification-card">
+            <h4 style="color: #d64545;">Rad etilgan hujjat</h4>
+            <p>So‘rovchi: {{i.company.name}}</p>
+            <div class="time">{{i.created_at}}</div>
+            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+        </div>
+    {% endif %}
+    {% endfor %}
+
+    <!-- Another pending
+    <div class="notification-card">
+        <h4>Yangi so‘rov: “Autorizatsiya talabi”</h4>
+        <p>Website A sizdan hujjat imzolashni so‘ramoqda.</p>
+        <div class="time">11:15, 30-01-2026</div>
+        <div class="actions">
+            <button class="btn btn-accept">Qabul qilish</button>
+            <button class="btn btn-deny">Rad etish</button>
+        </div>
+    </div> -->
+</main>
+
+{% include 'navbar.html' %}
+
+</body>
+</html>
+
+<script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    function sign(uuid){
+        fetch("/api/sign/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body:JSON.stringify({
+                uuid:uuid
+            })
+        })
+    }
+
+    function reject(uuid){
+        fetch("/api/reject/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body:JSON.stringify({
+                uuid:uuid
+            })
+        })
+    }
+</script>

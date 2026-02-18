@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bu Men – Sozlamalar</title>
+<style>
+:root {
+    --primary: #2563eb;
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --text: #000000;
+    --muted: #8b949e;
+    --border: #c5c5c5;
+    --shadow: rgba(225, 225, 225, 0.5);
+}
+
+* { box-sizing: border-box; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
+
+body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
+
+nav.top-nav {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.logo { font-weight: 700; font-size: 20px; color: var(--primary); }
+.nav-links { display: flex; gap: 25px; }
+.nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary); font-weight: 600; }
+
+main { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+
+.setting-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px var(--shadow);
+    margin-bottom: 20px;
+}
+
+.setting-card h4 { color: var(--primary); margin-bottom: 10px; }
+.setting-card label { display: block; font-size: 14px; margin-bottom: 6px; color: var(--muted); }
+.setting-card input, 
+.setting-card select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; transition: transform 0.2s; }
+.btn:hover { transform: scale(1.05); }
+.btn-save { background: var(--primary); color: var(--text); }
+
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 6px var(--shadow);
+    z-index: 1000;
+}
+
+.bottom-nav a { color: var(--muted); font-size: 12px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bottom-nav a.active { color: var(--primary); font-weight: 600; }
+
+@media (max-width: 768px) { nav.top-nav { display: none; } .bottom-nav { display: flex; } }
+
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div class="logo">Bu Men</div>
+    <div class="nav-links">
+        <a href="#">Yordam</a>
+    </div>
+</nav>
+
+<main>
+    <div class="setting-card">
+        <h4>Profil ma'lumotlari</h4>
+        <label for="name">Ism</label>
+        <input type="text" id="name" placeholder="Dilmukhammad">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="email@example.com">
+    </div>
+
+    <div class="setting-card">
+        <h4>Xavfsizlik</h4>
+        <label for="password">Parolni o‘zgartirish</label>
+        <input type="password" id="password" placeholder="Yangi parol">
+        <label for="confirm-password">Parolni tasdiqlash</label>
+        <input type="password" id="confirm-password" placeholder="Tasdiqlang">
+        <button class="btn btn-save" style="color: white;">Saqlash</button>
+    </div>
+
+    <!-- <div class="setting-card">
+        <h4>Umumiy sozlamalar</h4>
+        <label for="theme">Tema</label>
+        <select id="theme">
+            <option value="dark" selected>Qorong‘u</option>
+            <option value="light">Yorug‘</option>
+        </select>
+        <button class="btn btn-save">Saqlash</button>
+    </div> -->
+</main>
+
+{% include 'navbar.html' %}
+
+</body>
+</html>
