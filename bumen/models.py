@@ -21,9 +21,12 @@ class DocumentRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='request_documents')
     created_at = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.company.name} - {self.request_id}'
+
 class Signature(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='signs',editable=False)
-    document = models.ForeignKey(DocumentRequest, on_delete=models.SET_NULL, null=True,blank=True,related_name='signs',editable=False)
+    document = models.OneToOneField(DocumentRequest, on_delete=models.SET_NULL, null=True,blank=True,related_name='signs',editable=False)
     sign = models.UUIDField(primary_key=True,default=uuid.uuid4,unique=True,editable=False)
     created_at = models.DateField(auto_now_add=True,editable=False)
     created_at_detailed = models.DateTimeField(auto_now_add=True,editable=False)

@@ -24,3 +24,9 @@ class DocumentView(LoginRequiredMixin, View):
         doc = DocumentRequest.objects.get(user=request.user,request_id=id)
         files = File.objects.filter(document_request=doc)
         return render(request, 'viewer.html',{"doc":doc,"files":files})
+
+
+class DocumentsView(LoginRequiredMixin, View):
+    def get(self,request):
+        docs = DocumentRequest.objects.filter(user=request.user).order_by("-created_at")
+        return render(request,'documents.html',{"docs":docs})

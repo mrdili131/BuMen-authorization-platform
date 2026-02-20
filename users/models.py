@@ -8,6 +8,8 @@ roles = (
 
 class Company(models.Model):
     name = models.CharField(max_length=50)
+    chairman = models.CharField(max_length=50)
+    info = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

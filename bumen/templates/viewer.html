@@ -191,7 +191,7 @@ a{text-decoration: none;}
             {% if doc.status == 'signed' %}
                 tasdiqlangan va imzolangan.
                 <br><br>
-                <h2>{{user.full_name}}: [ {{doc.signs.first.sign}} ]</h2>
+                <h2>Imzo ID: <code>{{doc.signs.first.sign}}</code></h2>
             {% elif doc.status == 'rejected' %}
                 rad etilgan.
             {% else %}

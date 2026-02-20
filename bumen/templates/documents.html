@@ -9,7 +9,7 @@
     --primary: #2563eb;
     --bg: #ffffff;
     --card-bg: #ffffff;
-    --text: #ffffff;
+    --text: #4d81f1;
     --muted: #8b949e;
     --border: #c5c5c5;
     --shadow: rgba(225, 225, 225, 0.5);
@@ -21,7 +21,7 @@
 * { box-sizing: border-box; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
 
 body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
-
+a{text-decoration: none;}
 nav.top-nav {
     background: var(--card-bg);
     border-bottom: 1px solid var(--border);
@@ -77,6 +77,7 @@ main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
     font-weight: 600;
     font-size: 13px;
     transition: transform 0.2s;
+    margin-top: 5px;
 }
 
 .btn:hover { transform: scale(1.05); }
@@ -124,40 +125,97 @@ main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
 </nav>
 
 <main>
+
+    {% for i in docs %}
+
+    {% if i.status == 'pending' %}
     <!-- Example of pending document -->
     <div class="doc-card">
-        <h4>Hujjat: Shartnoma #123</h4>
-        <p>Vaqt: 2026-01-30 12:15</p>
+        <h4>Tashkilot: {{i.company.name}}</h4>
+        <p>Vaqt: {{i.created_at}}</p>
         <span class="doc-status status-pending">Kutilmoqda</span>
         <div class="doc-actions">
-            <button class="btn btn-view">Ko‘rish</button>
-            <button class="btn btn-accept">Qabul qilish</button>
-            <button class="btn btn-deny">Rad etish</button>
+            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+            <button class="btn btn-accept" onclick="sign('{{i.request_id}}')">Qabul qilish</button>
+            <button class="btn btn-deny" onclick="reject('{{i.request_id}}')">Rad etish</button>
         </div>
     </div>
+
+    {% elif i.status == 'signed' %}
 
     <!-- Example of signed document -->
     <div class="doc-card">
-        <h4>Hujjat: Shartnoma #122</h4>
-        <p>Vaqt: 2026-01-29 16:45</p>
+        <h4>Tashkilot: {{i.company.name}}</h4>
+        <p>Vaqt: {{i.created_at}}</p>
         <span class="doc-status status-signed">Imzolangan</span>
         <div class="doc-actions">
-            <button class="btn btn-view">Ko‘rish</button>
+            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
         </div>
     </div>
 
+    {% elif i.status == 'rejected' %}
+
     <!-- Example of rejected document -->
     <div class="doc-card">
-        <h4>Hujjat: Shartnoma #121</h4>
-        <p>Vaqt: 2026-01-28 09:30</p>
+        <h4>Tashkilot: {{i.company.name}}</h4>
+        <p>Vaqt: {{i.created_at}}</p>
         <span class="doc-status status-rejected">Rad etilgan</span>
         <div class="doc-actions">
-            <button class="btn btn-view">Ko‘rish</button>
+            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
         </div>
     </div>
+
+    {% endif %}
+    {% endfor %}
 </main>
 
 {% include 'navbar.html' %}
 
 </body>
 </html>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    function sign(uuid){
+        fetch("/api/sign/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body:JSON.stringify({
+                uuid:uuid
+            })
+        })
+        window.location.reload()
+    }
+
+    function reject(uuid){
+        fetch("/api/reject/",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body:JSON.stringify({
+                uuid:uuid
+            })
+        })
+        window.location.reload()
+    }
+</script>
