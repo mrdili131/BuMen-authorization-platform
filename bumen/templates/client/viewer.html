@@ -185,18 +185,28 @@ a{text-decoration: none;}
             <button type="button" class="btn" onclick="nextDoc()">Next ➡</button>
         </div>
 
+        <div class="contract-info">
+            <p>{{doc.desc}}</p>
+        </div>
+
         <div class="contract-info {{doc.status}}">
-            Ushbu shartnoma birnima tashkiloti tomonidan berilgan shartnoma.
+            Ushbu shartnoma {{doc.company.name}} tashkiloti tomonidan berilgan.
             Abduqodirov Dilmuhammad Sodirjon o‘g‘li tomonidan 
             {% if doc.status == 'signed' %}
                 tasdiqlangan va imzolangan.
                 <br><br>
-                <h2>Imzo ID: <code>{{doc.signs.first.sign}}</code></h2>
+                <div class="contract-info">
+                    <h2>Imzo ID: <code>{{signature.sign}}</code></h2>
+                </div>
             {% elif doc.status == 'rejected' %}
                 rad etilgan.
             {% else %}
                 ko‘rib chiqish jarayonida.
             {% endif %}
+
+            <div class="contract-info">
+                    <p>Muddati: {{doc.start_date}} - {{doc.end_date}}</p>
+            </div>
         </div>
 
     </div>

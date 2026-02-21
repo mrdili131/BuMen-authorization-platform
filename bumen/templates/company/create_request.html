@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yangi Hujjat Yaratish</title>
+
+<style>
+:root {
+    --primary: #2563eb;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --shadow: rgba(0,0,0,0.08);
+}
+
+/* RESET */
+* { box-sizing: border-box; margin:0; padding:0; font-family: Inter, sans-serif; }
+body { background: var(--bg); padding-bottom: 80px; }
+
+/* HEADER */
+header {
+    background: white;
+    padding: 18px 25px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.card h2 {
+    margin-bottom: 18px;
+    color: var(--primary);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+}
+
+button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-file { background: var(--success); color: white; margin-top:10px; }
+.remove { background: var(--danger); color:white; font-size:12px; margin-left:5px; }
+.submit-btn { background: var(--primary); color:white; width:100%; margin-top:15px; }
+
+/* USER SELECT */
+.user-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.user-box button {
+    background: var(--primary);
+    color: white;
+}
+.user-selected {
+    font-size: 13px;
+    color: var(--success);
+    display: none;
+    margin-bottom: 10px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 6px var(--shadow);
+    z-index: 1000;
+}
+.bottom-nav a {
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.bottom-nav a.active {
+    color: var(--primary);
+    font-weight: 600;
+}
+@media (max-width: 768px) {
+    .bottom-nav { display: flex; }
+}
+</style>
+</head>
+
+<body>
+
+<header>Kompaniya Paneli</header>
+
+<div class="container">
+
+<div class="card">
+    <h2>Yangi Hujjat Yaratish</h2>
+    <h4 style="color: red;">{{msg}}</h4>
+    <br>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- USER SELECTION -->
+        <label>Foydalanuvchi PINFL (14 raqam)</label>
+        <div class="user-box">
+            <input type="text" id="pinfl" name="pinfl" maxlength="14" placeholder="12345678912345">
+            <button type="button" onclick="selectUser()">Tanlash</button>
+        </div>
+        <div id="userSelected" class="user-selected">
+            ✔ Foydalanuvchi tanlandi: <span id="userName"></span>
+        </div>
+
+        <!-- DATE & DESCRIPTION -->
+        <label>Start Date</label>
+        <input type="date" name="start_date" required>
+
+        <label>End Date</label>
+        <input type="date" name="end_date" required>
+
+        <label>Description</label>
+        <textarea name="desc" rows="3"></textarea>
+
+        <!-- FILES -->
+        <h3>Fayllar</h3>
+        <div id="fileContainer"></div>
+        <button type="button" class="add-file" onclick="addFile()">+ Fayl qo‘shish</button>
+
+        <button type="submit" class="submit-btn">Yuborish</button>
+    </form>
+</div>
+
+</div>
+
+<!-- NAVBAR -->
+{% include 'navbar.html' %}
+
+<script>
+function addFile() {
+    let container = document.getElementById("fileContainer");
+
+    let div = document.createElement("div");
+    div.style.display = "flex";
+    div.style.alignItems = "center";
+    div.style.marginBottom = "5px";
+
+    div.innerHTML = `
+        <input type="file" name="files" accept=".pdf" required>
+        <button type="button" class="remove" onclick="this.parentElement.remove()">Remove</button>
+    `;
+
+    container.appendChild(div);
+}
+
+function selectUser() {
+    let pinfl = document.getElementById("pinfl").value;
+    if(!/^\d{14}$/.test(pinfl)){
+        alert("PINFL 14 xonali raqam bo‘lishi kerak!");
+        return;
+    }
+    document.getElementById("userSelected").style.display = "block";
+    document.getElementById("userName").innerText = "Demo User (" + pinfl + ")";
+}
+</script>
+
+</body>
+</html>

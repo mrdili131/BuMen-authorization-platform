@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verification Paper</title>
+
+<style>
+:root {
+    --primary: #2563eb;
+    --card: #ffffff;
+    --bg: #f8fafc;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --shadow: rgba(0,0,0,0.05);
+}
+
+/* Page styling */
+body {
+    background: var(--bg);
+    font-family: Inter, sans-serif;
+    padding: 20px;
+}
+
+.paper {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--card);
+    padding: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.section {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.section strong {
+    color: var(--text);
+}
+
+.qr-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.qr-box {
+    text-align: center;
+}
+
+.qr-box img {
+    width: 140px;
+    height: 140px;
+    border: 1px solid var(--border);
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="paper">
+
+    <div class="title">Verification Paper</div>
+
+    <div class="section">
+        <strong>Document ID:</strong> 000123<br>
+        <strong>User:</strong> John Doe<br>
+        <strong>Company:</strong> Example Company LLC<br>
+        <strong>Date:</strong> 21/02/2026
+    </div>
+
+    <div class="section">
+        This document confirms that the above-mentioned user has successfully
+        reviewed and signed the requested electronic document.
+        The authenticity of this document can be verified using the QR codes below.
+    </div>
+
+    <div class="qr-container">
+        <div class="qr-box">
+            <div><strong>View Document</strong></div>
+            <img src="qr1.png" alt="QR Code 1">
+        </div>
+        <div class="qr-box">
+            <div><strong>Verify Signature</strong></div>
+            <img src="qr2.png" alt="QR Code 2">
+        </div>
+    </div>
+
+    <div class="footer">
+        Powered by DizenStudios
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -7,5 +7,5 @@ urlpatterns = [
     path('notifications/', views.NotificationsView.as_view(), name='notifications'),
     path('settings/', views.SettingsView.as_view(), name='settings'),
     path('viewer/<uuid:id>/', views.DocumentView.as_view(), name='viewer'),
-    path('documents/', views.DocumentsView.as_view(), name='documents')
+    path('documents/<str:d_type>/', views.DocumentsView.as_view(), name='documents')
 ]

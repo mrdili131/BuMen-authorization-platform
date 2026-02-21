@@ -98,39 +98,47 @@
 </nav>
 
 <main>
-    {% for i in requests %}
-    {% if i.status == 'pending' %}
-        <!-- Pending request -->
-        <div class="notification-card">
-            <h4>Yangi so‘rov: “Imzolash uchun kontrakt”</h4>
-            <p>So‘rovchi: {{i.company.name}}</p>
-            <div class="time">{{i.created_at}}</div>
-            <div class="actions">
-                <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
-                <button class="btn btn-accept" onclick="sign('{{i.request_id}}')">Qabul qilish</button>
-                <button class="btn btn-deny" onclick="reject('{{i.request_id}}')">Rad etish</button>
+    {% if requests %}
+        {% for i in requests %}
+        {% if i.status == 'pending' %}
+            <!-- Pending request -->
+            <div class="notification-card">
+                <h4>Yangi so‘rov: “Imzolash uchun kontrakt”</h4>
+                <p>So‘rovchi: {{i.company.name}}</p>
+                <p>Muddati: {{i.start_date}} - {{i.end_date}}</p>
+                <div class="time">{{i.created_at}}</div>
+                <div class="actions">
+                    <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+                    <button class="btn btn-accept" onclick="sign('{{i.request_id}}')">Qabul qilish</button>
+                    <button class="btn btn-deny" onclick="reject('{{i.request_id}}')">Rad etish</button>
+                </div>
             </div>
-        </div>
-    {% elif i.status == 'signed' %}
-        <!-- Signed document -->
-        <div class="notification-card">
-            <h4 style="color: #2b961c;">Imzolangan hujjat</h4>
-            <p>So‘rovchi: {{i.company.name}}</p>
-            <div class="time">{{i.created_at}}</div>
-            <div class="actions">
+        {% elif i.status == 'signed' %}
+            <!-- Signed document -->
+            <div class="notification-card">
+                <h4 style="color: #2b961c;">Imzolangan hujjat</h4>
+                <p>So‘rovchi: {{i.company.name}}</p>
+                <p>Muddati: {{i.start_date}} - {{i.end_date}}</p>
+                <div class="time">{{i.created_at}}</div>
+                <div class="actions">
+                    <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+                </div>
+            </div>
+        {% elif i.status == 'rejected' %}
+            <!-- Denied document -->
+            <div class="notification-card">
+                <h4 style="color: #d64545;">Rad etilgan hujjat</h4>
+                <p>So‘rovchi: {{i.company.name}}</p>
+                <p>Muddati: {{i.start_date}} - {{i.end_date}}</p>
+                <div class="time">{{i.created_at}}</div>
                 <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
             </div>
-        </div>
-    {% elif i.status == 'rejected' %}
-        <!-- Denied document -->
-        <div class="notification-card">
-            <h4 style="color: #d64545;">Rad etilgan hujjat</h4>
-            <p>So‘rovchi: {{i.company.name}}</p>
-            <div class="time">{{i.created_at}}</div>
-            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
-        </div>
+        {% endif %}
+        {% endfor %}
+
+    {% else %}
+            <center><h1>Hujjatlar yo‘q</h1></center>
     {% endif %}
-    {% endfor %}
 
     <!-- Another pending
     <div class="notification-card">

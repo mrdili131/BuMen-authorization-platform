@@ -24,7 +24,10 @@ class DocumentSignAPI(APIView):
         doc.save()
         sign = Signature(
             user=request.user,
-            document=doc
+            document=doc,
+            company = doc.company,
+            start_date = doc.start_date,
+            valid_date = doc.end_date
         )
         sign.save()
         Action(

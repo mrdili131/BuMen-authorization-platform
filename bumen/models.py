@@ -1,11 +1,13 @@
 from django.db import models
 from users.models import User, Company
 import uuid
+from django.utils import timezone
 
 status_t = [
     ('signed','signed'),
     ('pending','pending'),
-    ('rejected','rejected')
+    ('rejected','rejected'),
+    ('done','done'),
 ]
 
 notification_t = [
@@ -18,6 +20,9 @@ class DocumentRequest(models.Model):
     request_id = models.UUIDField(primary_key=True,default=uuid.uuid4,unique=True,editable=False)
     company = models.ForeignKey(Company, on_delete=models.SET_NULL,null=True,blank=True)
     status = models.CharField(choices=status_t,default='pending',max_length=20)
+    start_date = models.DateField(null=True,blank=True) #make not null
+    end_date = models.DateField(null=True,blank=True) #make not null
+    desc = models.TextField(default="")
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='request_documents')
     created_at = models.DateField(auto_now_add=True)
 
@@ -27,9 +32,19 @@ class DocumentRequest(models.Model):
 class Signature(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True,related_name='signs',editable=False)
     document = models.OneToOneField(DocumentRequest, on_delete=models.SET_NULL, null=True,blank=True,related_name='signs',editable=False)
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL,null=True,blank=True)
     sign = models.UUIDField(primary_key=True,default=uuid.uuid4,unique=True,editable=False)
+    start_date = models.DateField(null=True,blank=True) #make editable false and not null
+    valid_date = models.DateField(null=True,blank=True) #make non editable and not null
+    is_active = models.BooleanField(default=True) #make not editable
     created_at = models.DateField(auto_now_add=True,editable=False)
     created_at_detailed = models.DateTimeField(auto_now_add=True,editable=False)
+
+    def checkchecking(self):
+        today = timezone.now().date()
+        if self.valid_date and self.valid_date <= today:
+            self.is_active = False
+            self.save()
 
 class VerificationRequest(models.Model):
     request_id = models.UUIDField(primary_key=True,default=uuid.uuid4,unique=True,editable=False)

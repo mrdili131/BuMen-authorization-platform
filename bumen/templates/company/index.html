@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kompaniya Paneli</title>
+
+<style>
+:root {
+    --primary: #2563eb;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --warning: #f59e0b;
+}
+
+* { box-sizing: border-box; margin:0; padding:0; font-family: Inter, sans-serif; }
+
+body { background: var(--bg); padding-bottom: 80px; }
+
+header {
+    background: white;
+    padding: 18px 25px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.card h2 {
+    margin-bottom: 18px;
+    color: var(--primary);
+}
+
+.request-item {
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: white;
+}
+
+.pending { background: var(--warning); }
+.signed { background: var(--success); }
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-cancel {
+    background: var(--danger);
+    color: white;
+}
+
+/* SEARCH */
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 6px var(--shadow);
+    z-index: 1000;
+}
+
+.bottom-nav a {
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.bottom-nav a.active {
+    color: var(--primary);
+    font-weight: 600;
+}
+@media (max-width: 768px) {
+        nav.top-nav { display: none; }
+        .bottom-nav { display: flex; }
+    }
+</style>
+</head>
+
+<body>
+
+<header>Kompaniya Paneli</header>
+
+<div class="container">
+
+    <!-- Jarayondagi -->
+    <div class="card">
+        <h2>Jarayondagi hujjatlar</h2>
+
+        <div class="request-item">
+            <div>
+                <strong>Mehnat shartnomasi</strong><br>
+                user@email.com
+            </div>
+            <div>
+                <span class="status pending">Jarayonda</span>
+                <button class="btn btn-cancel" onclick="cancelDoc(this)">Qaytarish</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Imzolangan -->
+    <div class="card">
+        <h2>Imzolangan hujjatlar</h2>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Hujjat nomi yoki email bo‘yicha qidirish..." onkeyup="searchDocs()">
+        </div>
+
+        <div id="signedList">
+
+            <div class="request-item">
+                <div>
+                    <strong>Hamkorlik shartnomasi</strong><br>
+                    partner@email.com
+                </div>
+                <span class="status signed">Imzolangan</span>
+            </div>
+
+            <div class="request-item">
+                <div>
+                    <strong>Xizmat shartnomasi</strong><br>
+                    client@email.com
+                </div>
+                <span class="status signed">Imzolangan</span>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Original Bottom Navbar -->
+{% include 'navbar.html' %}
+
+<script>
+function searchDocs() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let items = document.querySelectorAll("#signedList .request-item");
+
+    items.forEach(item => {
+        let text = item.innerText.toLowerCase();
+        item.style.display = text.includes(input) ? "flex" : "none";
+    });
+}
+
+function cancelDoc(button) {
+    if(confirm("Haqiqatan ham hujjatni qaytarasizmi?")) {
+        let item = button.closest(".request-item");
+        item.remove();
+        alert("Hujjat qaytarildi.");
+    }
+}
+</script>
+
+</body>
+</html>

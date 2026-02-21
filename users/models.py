@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 roles = (
     ('client','client'),
     ('worker','worker'),
+    ('admin','admin'),
 )
 
 class Company(models.Model):
@@ -31,8 +32,14 @@ class User(AbstractUser):
     middle_name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=100,default="")
     role = models.CharField(max_length=20,choices=roles,default="client")
+
+    passport_serial = models.CharField(max_length=9,default="")#make unique
+    pinfl = models.CharField(max_length=14,default="")#make unique
+    born_date = models.DateField(null=True,blank=True)
+
     phone_number = models.CharField(max_length=20,null=True,blank=True)
     filial = models.ForeignKey(Filial,on_delete=models.CASCADE,null=True,blank=True)
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

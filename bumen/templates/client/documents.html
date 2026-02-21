@@ -126,47 +126,55 @@ main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
 
 <main>
 
-    {% for i in docs %}
+    {% if docs %}
+        {% for i in docs %}
 
-    {% if i.status == 'pending' %}
-    <!-- Example of pending document -->
-    <div class="doc-card">
-        <h4>Tashkilot: {{i.company.name}}</h4>
-        <p>Vaqt: {{i.created_at}}</p>
-        <span class="doc-status status-pending">Kutilmoqda</span>
-        <div class="doc-actions">
-            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
-            <button class="btn btn-accept" onclick="sign('{{i.request_id}}')">Qabul qilish</button>
-            <button class="btn btn-deny" onclick="reject('{{i.request_id}}')">Rad etish</button>
+        {% if i.status == 'pending' %}
+        <!-- Example of pending document -->
+        <div class="doc-card">
+            <h4>Tashkilot: {{i.company.name}}</h4>
+            <p>Vaqt: {{i.created_at}}</p>
+            <p>Muddati: {{i.start_date}} - {{i.end_date}}</p>
+            <span class="doc-status status-pending">Kutilmoqda</span>
+            <div class="doc-actions">
+                <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+                <button class="btn btn-accept" onclick="sign('{{i.request_id}}')">Qabul qilish</button>
+                <button class="btn btn-deny" onclick="reject('{{i.request_id}}')">Rad etish</button>
+            </div>
         </div>
-    </div>
 
-    {% elif i.status == 'signed' %}
+        {% elif i.status == 'signed' %}
 
-    <!-- Example of signed document -->
-    <div class="doc-card">
-        <h4>Tashkilot: {{i.company.name}}</h4>
-        <p>Vaqt: {{i.created_at}}</p>
-        <span class="doc-status status-signed">Imzolangan</span>
-        <div class="doc-actions">
-            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+        <!-- Example of signed document -->
+        <div class="doc-card">
+            <h4>Tashkilot: {{i.company.name}}</h4>
+            <p>Vaqt: {{i.created_at}}</p>
+            <p>Muddati: {{i.start_date}} - {{i.end_date}}</p>
+            <span class="doc-status status-signed">Imzolangan</span>
+            <div class="doc-actions">
+                <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+            </div>
         </div>
-    </div>
 
-    {% elif i.status == 'rejected' %}
+        {% elif i.status == 'rejected' %}
 
-    <!-- Example of rejected document -->
-    <div class="doc-card">
-        <h4>Tashkilot: {{i.company.name}}</h4>
-        <p>Vaqt: {{i.created_at}}</p>
-        <span class="doc-status status-rejected">Rad etilgan</span>
-        <div class="doc-actions">
-            <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+        <!-- Example of rejected document -->
+        <div class="doc-card">
+            <h4>Tashkilot: {{i.company.name}}</h4>
+            <p>Vaqt: {{i.created_at}}</p>
+            <p>Muddati: {{i.start_date}} - {{i.end_date}}</p>
+            <span class="doc-status status-rejected">Rad etilgan</span>
+            <div class="doc-actions">
+                <a href="{% url 'viewer' i.request_id %}" class="btn btn-view">Ko‘rish</a>
+            </div>
         </div>
-    </div>
 
+        {% endif %}
+        {% endfor %}
+
+    {% else %}
+        <center><h1>Hujjatlar yo‘q</h1></center>
     {% endif %}
-    {% endfor %}
 </main>
 
 {% include 'navbar.html' %}

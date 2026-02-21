@@ -1,5 +1,16 @@
 <div class="bottom-nav">
-    <a href="{% url 'home' %}" class="active">📄<span>Menyu</span></a>
-    <a href="{% url 'notifications' %}">🔔<span>Habarlar</span></a>
-    <a href="{% url 'settings' %}">⚙️<span>Sozlamalar</span></a>
+    {% if user.role == 'client' %}
+        <a href="{% url 'home' %}" class="active">📄<span>Menyu</span></a>
+        <a href="{% url 'notifications' %}">🔔<span>Habarlar</span></a>
+        <a href="{% url 'settings' %}">⚙️<span>Sozlamalar</span></a>
+    {% elif user.role == 'worker' %}
+        <a href="{% url 'company:home' %}" class="active">📁<span>Menyu</span></a>
+        <a href="{% url 'company:create_request' %}" class="active">✒<span>Shartnoma tuzish</span></a>
+    {% elif user.role == 'admin' %}
+        <a href="{% url 'home' %}" class="active">📄<span>Menyu (client)</span></a>
+        <a href="{% url 'notifications' %}">🔔<span>Habarlar (client)</span></a>
+        <a href="{% url 'settings' %}">⚙️<span>Sozlamalar (client)</span></a>
+        <a href="{% url 'company:home' %}" class="active">📁<span>Menyu (ishchi)</span></a>
+        <a href="{% url 'company:create_request' %}" class="active">✒<span>Shartnoma tuzish (ishchi)</span></a>
+    {% endif %}
 </div>
